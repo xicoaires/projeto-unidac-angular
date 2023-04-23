@@ -8,7 +8,7 @@ import { Employee } from '../model/employee';
 })
 export class EmployeeService {
 
-  apiUrl = 'http://localhost:8080/employees';
+  apiUrl = 'https://desafio-unidac.up.railway.app/employees';
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
