@@ -1,0 +1,42 @@
+table {
+    width: 90vw;
+    text-align: center;
+    margin-top: 0;
+  }
+  h2{
+    margin-bottom: 2px;
+  }
+
+  .main-container{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+  } 
+
+  img {
+    height: 35px;
+    width: auto;
+    margin-bottom: 10px;
+  }
+
+
+
+.mat-mdc-row .mat-mdc-cell {
+  border-bottom: 1px solid transparent;
+  border-top: 1px solid transparent;
+  cursor: pointer;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+  border-color: currentColor;
+}
+
+.demo-row-is-clicked {
+  font-weight: bold;
+}
+
+#btn-new-item {
+  margin-top: 15px;
+}

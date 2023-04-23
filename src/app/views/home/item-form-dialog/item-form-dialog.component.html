@@ -1,0 +1,32 @@
+<h1 mat-dialog-title>Novo Item</h1>
+<div mat-dialog-content>
+    <form class="exemple-form" [formGroup]="newItemForm">
+
+        <mat-form-field class="exemple-full-width">
+            <mat-label>Colaborador</mat-label>
+            <input matInput formControlName="name" name="name">
+        </mat-form-field>
+
+        <mat-form-field class="exemple-full-width">
+            <mat-label>CPF (apenas números)</mat-label>
+            <input matInput formControlName="cpf" name="cpf" maxlength="11">
+        </mat-form-field>
+
+        <mat-form-field class="exemple-full-width">
+            <mat-label>Item</mat-label>
+            <input matInput formControlName="foodOption" name="foodOption">
+        </mat-form-field>
+
+        <mat-form-field class="exemple-full-width">
+            <mat-label>Data</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="date" name="date">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+    </form>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary" (click)="addNewItem()">Adicionar</button>
+        <button mat-button (click)="cancel()">Cancelar</button>
+    </div>
+</div>
