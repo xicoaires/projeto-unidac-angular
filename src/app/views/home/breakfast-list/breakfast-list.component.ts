@@ -7,7 +7,6 @@ import { ItemFormDialogComponent } from '../item-form-dialog/item-form-dialog.co
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, map } from 'rxjs';
 import { EditFormDialogComponent } from '../edit-form-dialog/edit-form-dialog.component';
-import { switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 
 
@@ -65,17 +64,14 @@ export class BreakfastListComponent implements OnInit {
 
   getEmployees() {
     this.employeeService.getAllEmployees().subscribe(employees => {
-      this.innerArray = employees.map(employee => {
-        const date = moment.utc(employee.date).local().format('YYYY-MM-DD');
-        return { ...employee, date };
-      }).slice().sort((a, b) => {
-        const dateA = new Date(a.date);
-        const dateB = new Date(b.date);
-        return dateA.getTime() - dateB.getTime();
+      this.innerArray = employees.slice().sort((a, b) => {
+        const dateA = moment(a.date).format('YYYY-MM-DD');
+        const dateB = moment(b.date).format('YYYY-MM-DD');
+        return dateA.localeCompare(dateB);
       });
     });
+    
   }
-  
 
   deleteEmployee(id: number) {
     this.employeeService.deleteEmployee(id).subscribe(() => {
@@ -105,6 +101,7 @@ export class BreakfastListComponent implements OnInit {
       this.getEmployees();
       // Fechar o diálogo de edição
       this.dialog.closeAll();
+      
     });
 
   }
