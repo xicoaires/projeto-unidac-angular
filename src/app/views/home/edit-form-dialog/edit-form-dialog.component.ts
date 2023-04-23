@@ -4,6 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { Employee } from 'src/app/shared/model/employee';
 import { EmployeeService } from 'src/app/shared/service/employee.service';
+import { ItemFormDialogComponent } from '../item-form-dialog/item-form-dialog.component';
 
 @Component({
   selector: 'app-edit-form-dialog',
@@ -27,15 +28,8 @@ export class EditFormDialogComponent implements OnInit{
     });
 
     if (data && data.employee) {
-      const employee = data.employee;
-      // Converter a data para o fuso horário local correto
-      const localDate = moment.utc(employee.date).local().format('YYYY-MM-DD');
-      employee.date = localDate;
-      this.editItemForm.patchValue(employee);
+      this.editItemForm.patchValue(data.employee);
     }
-    
-    this.data = data;
-    
   }
 
   ngOnInit(): void {
@@ -49,12 +43,11 @@ export class EditFormDialogComponent implements OnInit{
   updateEmployee(): void {
     const id = this.data.id ?? 0;
     const updatedEmployee = this.editItemForm.value;
+    const newDate: moment.Moment = moment.utc(this.editItemForm.value.date).local();
+    updatedEmployee.date = newDate.format('YYYY-MM-DD');
     this.employeeService.updateEmployee(id, updatedEmployee).subscribe(() => {
       // Atualizar a tabela de funcionários
       this.dialogRef.close();
     });
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
   }
 }

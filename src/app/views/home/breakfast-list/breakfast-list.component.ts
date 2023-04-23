@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, map } from 'rxjs';
 import { EditFormDialogComponent } from '../edit-form-dialog/edit-form-dialog.component';
 import { switchMap } from 'rxjs/operators';
+import * as moment from 'moment';
 
 
 
@@ -41,7 +42,7 @@ export class BreakfastListComponent implements OnInit {
     this.editForm = this.formBuilder.group({
       id: [''],
       name: ['', Validators.required],
-    cpf: ['', [Validators.required, Validators.pattern('[0-9]{11}')]],
+      cpf: ['', [Validators.required, Validators.pattern('[0-9]{11}')]],
       foodOption: ['', Validators.required],
       date: ['', Validators.required],
       verification: [''],
@@ -52,7 +53,7 @@ export class BreakfastListComponent implements OnInit {
   ngOnInit(): void {
     this.getEmployees();
   }
-  
+
   addItem(): void {
     const dialogRef = this.dialog.open(ItemFormDialogComponent, {
       minWidth: '400px'
@@ -64,13 +65,17 @@ export class BreakfastListComponent implements OnInit {
 
   getEmployees() {
     this.employeeService.getAllEmployees().subscribe(employees => {
-      this.innerArray = employees.slice().sort((a, b) => {
+      this.innerArray = employees.map(employee => {
+        const date = moment.utc(employee.date).local().format('YYYY-MM-DD');
+        return { ...employee, date };
+      }).slice().sort((a, b) => {
         const dateA = new Date(a.date);
         const dateB = new Date(b.date);
         return dateA.getTime() - dateB.getTime();
       });
     });
   }
+  
 
   deleteEmployee(id: number) {
     this.employeeService.deleteEmployee(id).subscribe(() => {
@@ -80,19 +85,19 @@ export class BreakfastListComponent implements OnInit {
       window.location.reload();
     }, 1000);
   }
-  
+
   editEmployee(id: number): void {
     this.employeeService.getEmployeeById(id).subscribe(employee => {
       const dialogRef = this.dialog.open(EditFormDialogComponent, {
         minWidth: '400px',
         data: { id: id, employee: employee } // Passar os dados do funcionário recuperado
       });
-  
+
       dialogRef.afterClosed().subscribe(result => {
       });
     });
   }
-  
+
   updateEmployee(id: number) {
     const updatedEmployee = this.editForm.value;
     this.employeeService.updateEmployee(id, updatedEmployee).subscribe(() => {
