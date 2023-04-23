@@ -27,7 +27,11 @@ export class EditFormDialogComponent implements OnInit{
     });
 
     if (data && data.employee) {
-      this.editItemForm.patchValue(data.employee);
+      const employee = data.employee;
+      // Converter a data para o fuso horário local correto
+      const localDate = moment.utc(employee.date).local().format('YYYY-MM-DD');
+      employee.date = localDate;
+      this.editItemForm.patchValue(employee);
     }
     
     this.data = data;
@@ -45,8 +49,6 @@ export class EditFormDialogComponent implements OnInit{
   updateEmployee(): void {
     const id = this.data.id ?? 0;
     const updatedEmployee = this.editItemForm.value;
-    const newDate: moment.Moment = moment.utc(this.editItemForm.value.date).local();
-    updatedEmployee.date = newDate.format('YYYY-MM-DD');
     this.employeeService.updateEmployee(id, updatedEmployee).subscribe(() => {
       // Atualizar a tabela de funcionários
       this.dialogRef.close();
