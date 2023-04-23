@@ -8,7 +8,7 @@ import { Employee } from '../model/employee';
 })
 export class EmployeeService {
 
-  apiUrl = 'https://desafio-unidac.up.railway.app/employees';
+  apiUrl = 'https://desafio-unidac.up.railway.app';
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
@@ -19,27 +19,33 @@ export class EmployeeService {
     private httpClient: HttpClient
   ) { }
 
-  public getAllEmployees() {
-    return this.httpClient.get<Employee[]>(this.apiUrl)
+  private addAccessControlHeader(headers?: HttpHeaders): HttpHeaders {
+    headers = headers || new HttpHeaders();
+    return headers.append('Access-Control-Allow-Origin', this.apiUrl);
+  }
+
+  public getAllEmployees(): Observable<Employee[]> {
+    return this.httpClient.get<Employee[]>(`${this.apiUrl}/employees`, this.httpOptions);
   };
 
   public addEmployee(employee: any): Observable<Employee>{
-    return this.httpClient.post<any>(this.apiUrl, employee, this.httpOptions)
+    const headers = this.addAccessControlHeader();
+    return this.httpClient.post<any>(this.apiUrl, employee, { headers });
   };
 
   public deleteEmployee(id: number): Observable<any> {
     const url = `${this.apiUrl}/${id}`;
-    return this.httpClient.delete(url, this.httpOptions);
+    const headers = this.addAccessControlHeader();
+    return this.httpClient.delete(url, { headers });
   }
 
-  public getEmployeeById(id: number) {
+  public getEmployeeById(id: number): Observable<Employee> {
     const url = `${this.apiUrl}/${id}`;
-    return this.httpClient.get<Employee>(url);
+    return this.httpClient.get<Employee>(url, this.httpOptions);
   }
 
   public updateEmployee(id: number, employee: Employee): Observable<Employee> {
     const url = `${this.apiUrl}/${id}`;
-    console.log(id, employee);
     return this.httpClient.put<Employee>(url, employee, this.httpOptions);
   }
 
