@@ -28,6 +28,7 @@ export class EditFormDialogComponent implements OnInit{
     });
 
     if (data && data.employee) {
+      data.employee.date = moment(data.employee.date, 'YYYY-MM-DD').format('YYYY-MM-DDTHH:mm:ssZ');
       this.editItemForm.patchValue(data.employee);
     }
   }
