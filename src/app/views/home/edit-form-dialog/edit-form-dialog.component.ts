@@ -27,12 +27,7 @@ export class EditFormDialogComponent implements OnInit{
     });
 
     if (data && data.employee) {
-      const employee = data.employee;
-      // Converter a data para UTC antes de converter para o formato YYYY-MM-DD
-      const utcDate = moment.utc(employee.date, 'YYYY-MM-DD').toDate();
-      const localDate = moment(utcDate).local().format('YYYY-MM-DD');
-      employee.date = localDate;
-      this.editItemForm.patchValue(employee);
+      this.editItemForm.patchValue(data.employee);
     }
     
     this.data = data;
@@ -50,9 +45,8 @@ export class EditFormDialogComponent implements OnInit{
   updateEmployee(): void {
     const id = this.data.id ?? 0;
     const updatedEmployee = this.editItemForm.value;
-    // Converter a data para UTC antes de converter para o formato YYYY-MM-DD
-    const utcDate = moment.utc(this.editItemForm.value.date, 'YYYY-MM-DD').toDate();
-    updatedEmployee.date = moment(utcDate).format('YYYY-MM-DD');
+    const newDate: moment.Moment = moment.utc(this.editItemForm.value.date).local();
+    updatedEmployee.date = newDate.format('YYYY-MM-DD');
     this.employeeService.updateEmployee(id, updatedEmployee).subscribe(() => {
       // Atualizar a tabela de funcionários
       this.dialogRef.close();
