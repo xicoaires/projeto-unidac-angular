@@ -1,0 +1,8 @@
+{
+    "/employees": {
+      "target": "https://desafio-unidac.up.railway.app",
+      "secure": false,
+      "changeOrigin": true
+    }
+  }
+  
