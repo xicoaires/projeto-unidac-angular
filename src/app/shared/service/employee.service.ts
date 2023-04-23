@@ -8,7 +8,7 @@ import { Employee } from '../model/employee';
 })
 export class EmployeeService {
 
-  apiUrl = 'https://https://back-end-angular.up.railway.app/employees';
+  apiUrl = 'https://back-end-angular.up.railway.app/employees';
   // apiUrl = 'http://localhost:8080/employees';
   httpOptions = {
     headers: new HttpHeaders({
