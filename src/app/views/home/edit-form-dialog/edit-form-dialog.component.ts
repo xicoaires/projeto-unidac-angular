@@ -49,5 +49,8 @@ export class EditFormDialogComponent implements OnInit{
       // Atualizar a tabela de funcionários
       this.dialogRef.close();
     });
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   }
 }
